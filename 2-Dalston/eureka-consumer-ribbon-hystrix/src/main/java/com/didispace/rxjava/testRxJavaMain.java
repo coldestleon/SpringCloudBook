@@ -2,6 +2,7 @@ package com.didispace.rxjava;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Producer;
 import rx.Subscriber;
 import rx.functions.Func2;
 import rx.plugins.RxJavaHooks;
@@ -9,6 +10,10 @@ import rx.plugins.RxJavaPlugins;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class testRxJavaMain {
     public static void main(String[] args) {
@@ -19,12 +24,13 @@ public class testRxJavaMain {
          */
         Func2<Observable, Observable.OnSubscribe, Observable.OnSubscribe> onObservableStart =
                 (t1, t2) -> {
-                System.out.println("my custom");
+                System.out.println("my custom onObservableStart");
                 return RxJavaPlugins.getInstance().getObservableExecutionHook().onSubscribeStart(t1, t2);
         };
         RxJavaHooks.setOnObservableStart(onObservableStart);
 //        testCreate(args);
-        testFrom(args);
+//        testFrom(args);
+        testFuture();
     }
     public static void testCreate(String[] args) {
         // normal impl
@@ -91,6 +97,42 @@ public class testRxJavaMain {
             @Override
             public void onNext(String str) {
                 System.out.println(str);
+            }
+        });
+    }
+
+    public static void testFuture() {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Callable<String> callable = new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                System.out.println(String.format("callable run in thread " + Thread.currentThread().getName()));
+                Thread.sleep(10000);
+                return "run in callable call function";
+            }
+        };
+        FutureTask<String> task = new FutureTask<>(callable);
+        System.out.println("instance future task");
+        Observable<String> observable = Observable.from(task);
+        System.out.println("instance observable");
+        executorService.submit(task);
+        executorService.shutdown();
+        //使用observable的方式进行注册消费者，如果注册的future没有执行完成，会柱塞当前线程
+        observable.subscribe(new Observer<String>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("observable run complete");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("observable error");
+            }
+
+            @Override
+            public void onNext(String s) {
+                System.out.println(String.format("observer onNext run in thread " + Thread.currentThread().getName()));
+                System.out.println("observer get msg " + s);
             }
         });
     }
