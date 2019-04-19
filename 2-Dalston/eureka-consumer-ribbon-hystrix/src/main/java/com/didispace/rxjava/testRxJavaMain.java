@@ -4,6 +4,8 @@ import rx.Observable;
 import rx.Observer;
 import rx.Producer;
 import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func2;
 import rx.plugins.RxJavaHooks;
 import rx.plugins.RxJavaPlugins;
@@ -30,7 +32,8 @@ public class testRxJavaMain {
         RxJavaHooks.setOnObservableStart(onObservableStart);
 //        testCreate(args);
 //        testFrom(args);
-        testFuture();
+//        testFuture();
+        testDefer();
     }
     public static void testCreate(String[] args) {
         // normal impl
@@ -135,5 +138,42 @@ public class testRxJavaMain {
                 System.out.println("observer get msg " + s);
             }
         });
+    }
+
+    public static void testDefer() {
+        Observable justObservable = Observable.just("21");
+        Observable deferObservable = Observable.defer(new Func0<Observable<String>>() {
+
+            @Override
+            public Observable<String> call() {
+                return Observable.just("12");
+            }
+        });
+
+        Subscriber<String> justSubscriber = new Subscriber<String>(){
+            @Override
+            public void onStart() {
+                System.out.println("overwrite onStart");
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("observable run complete");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("observable error");
+            }
+
+            @Override
+            public void onNext(String s) {
+                System.out.println("observer get msg " + s);
+            }
+        };
+
+        justObservable.subscribe(justSubscriber);
+
+        deferObservable.subscribe(justSubscriber);
     }
 }
