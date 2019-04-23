@@ -141,7 +141,7 @@ public class testRxJavaMain {
     }
 
     public static void testDefer() {
-        Observable justObservable = Observable.just("21");
+//        Observable justObservable = Observable.just("21");
         Observable deferObservable = Observable.defer(new Func0<Observable<String>>() {
 
             @Override
@@ -172,7 +172,7 @@ public class testRxJavaMain {
             }
         };
 
-        justObservable.subscribe(justSubscriber);
+//        justObservable.subscribe(justSubscriber);
 
         deferObservable.subscribe(justSubscriber);
     }

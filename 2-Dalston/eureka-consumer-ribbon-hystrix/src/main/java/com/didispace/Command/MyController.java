@@ -1,5 +1,6 @@
-package com.didispace;
+package com.didispace.Command;
 
+import com.didispace.Command.MyCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
