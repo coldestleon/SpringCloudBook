@@ -8,18 +8,18 @@ class TestKotlinMain
 
 fun main(args: Array<String>) {
     args.forEach { System.out.println(it) }
-    System.out.println("test kotlin print")
     val ls: List<User> = listOf(
         User("xue", 10),
         User("xue", 13),
         User("yapeng", 10),
         User("yapeng", 13))
-    ls.filter(distinctByKey{ it }).groupBy { it.name }
-//        .mapValues { (name, value) -> value.sortedByDescending { it.age } }
-        .forEach{(name, value) -> run { print(name)
-            print(value)
-        }}
-    print(DateUnitEnum.YEAR.toString())
+//    ls.filter(distinctByKey{ it }).groupBy { it.name }
+////        .mapValues { (name, value) -> value.sortedByDescending { it.age } }
+//        .forEach{(name, value) -> run { print(name)
+//            print(value)
+//        }}
+//    print(DateUnitEnum.YEAR.toString())
+    ls.filter { it == null }.forEach { print(it) }
 }
 
 private fun <T> distinctByKey(keyExtractor: (T) -> Any): (T) -> Boolean {

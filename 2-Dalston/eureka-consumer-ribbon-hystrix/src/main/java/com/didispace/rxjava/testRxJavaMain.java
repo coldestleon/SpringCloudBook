@@ -33,7 +33,8 @@ public class testRxJavaMain {
 //        testCreate(args);
 //        testFrom(args);
 //        testFuture();
-        testDefer();
+//        testDefer();
+        test(args);
     }
     public static void testCreate(String[] args) {
         // normal impl
@@ -175,5 +176,15 @@ public class testRxJavaMain {
 //        justObservable.subscribe(justSubscriber);
 
         deferObservable.subscribe(justSubscriber);
+    }
+
+    public static void test(String[] args) {
+        Observable<String> observable = Observable.from(args)
+                .doOnNext((String t) ->
+                        System.out.println("iter to " + t))
+                .doOnError((Throwable t) ->
+                        System.out.println(t.getMessage()))
+                .doOnCompleted(() -> System.out.println("completed"));
+        observable.subscribe();
     }
 }
