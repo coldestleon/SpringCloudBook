@@ -5,10 +5,20 @@ spring:
     config:
       server:
         git:
-          uri: http://git.oschina.net/didispace/config-repo-demo/
-#          search-paths: repo
-#          username:
-#          password:
+          uri: https://github.com/coldestleon/spring-cloud-config-in-action
+          search-paths: config-repo
+          username: 562250082@qq.com
+          password: xue599204267
+        overrides:
+          from: override-from
+  datasource:
+    username: xueyp
+    password: {cipher}xue599204267
 
 server:
-  port: 1201
+  port: 10008
+
+security:
+  user:
+    name: user
+    password: xue599204267

@@ -1,12 +1,16 @@
 spring:
   application:
-    name: config-client
+    name: testApp
   cloud:
     config:
-      uri: http://localhost:1201/
-      profile: default
-      label: master
+      uri: http://localhost:10008/
+      profile: dev
+      label: version2
+      username: user
+      password: xue599204267
 
 server:
-  port: 2001
+  port: 10009
+
+from: local-from
 
