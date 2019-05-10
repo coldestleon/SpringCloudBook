@@ -3,7 +3,7 @@ spring:
     name: api-gateway
 
 server:
-  port: 1101
+  port: 10010
 
 zuul:
   routes:

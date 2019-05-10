@@ -1,9 +1,10 @@
 spring:
   application:
     name: api-gateway
-
 server:
-  port: 1101
+  servlet:
+    context-path: api
+  port: 10011
 
 zuul:
   routes:
@@ -14,4 +15,4 @@ zuul:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:1001/eureka/
+      defaultZone: http://localhost:10001/eureka/
