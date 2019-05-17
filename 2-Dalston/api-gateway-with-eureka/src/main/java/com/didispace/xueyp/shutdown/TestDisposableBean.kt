@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component
 @Component
 class TestDisposableBean : DisposableBean {
     override fun destroy() {
-        println("bean is destoryed")
+        println("TestDisposableBean is destoryed")
     }
 }
