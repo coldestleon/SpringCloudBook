@@ -14,8 +14,9 @@ class TestController @Autowired constructor(
     private val executor: MyExecutorService
 ) {
     @GetMapping(value = ["bylazy"])
-    fun testByLazy() {
+    fun testByLazy(): String {
         testService.testByLazy()
+        throw RuntimeException("haha")
     }
 
     @GetMapping(value = ["observe"])
